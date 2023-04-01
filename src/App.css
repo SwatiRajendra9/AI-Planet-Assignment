@@ -26,20 +26,19 @@ h1 {
 #cards {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   flex-wrap: wrap;
   align-items: center;
   margin-top: 50px;
   font-family: 'Poppins';
   font-weight: 500;
+  width: 100%;
 }
 
 #logo-div {
   height: 64px;
   width: 1440px;
-  left: 0px;
   top: 2px;
-  border-radius: 0px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -76,7 +75,6 @@ h1 {
 #hackathon-submission-div {
   height: 456px;
   width: 1440px;
-  left: 0px;
   top: 66px;
   border-radius: 0px;
   background-color: #003145;
@@ -110,14 +108,19 @@ h1 {
   font-size: 42px;
   vertical-align: top;
   font-family: 'Poppins';
+  font-weight: 600;
+  margin-top: 0;
+  
 }
 
-#submission-desc {
-  font-style: Medium;
-  font-size: 17px;
-  line-height: 26px;
+#submission-desc { 
+  margin-top: 0;
   vertical-align: top;
   font-family: 'Poppins';
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: left;
 }
 
 #bulb-img {

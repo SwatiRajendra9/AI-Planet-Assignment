@@ -9,7 +9,7 @@ import { Tabs, Tab, TextField } from "@mui/material";
 function TabPanel(props) {
 	const { children, value, index, cardArray, screenChangeCardDesc, ...other } = props;
 
-	function getTimeSince(timeDiff, element) {
+	function getTimeSince(timeDiff) {
 		var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
 		var hours = Math.floor(timeDiff / (1000 * 60 * 60))
 		var mins = Math.floor(timeDiff / (1000 * 60))
@@ -112,8 +112,7 @@ function HomePage(props) {
 							<Tab label={<span style={{ color: value == 0 ? '#333333' : '#666666', textTransform: 'none', fontSize: '17px' }}>All Submissions</span>} />
 							<Tab label={<span style={{ color: value == 1 ? '#333333' : '#666666', textTransform: 'none', fontSize: '17px' }}>Favourite Submissions</span>} />
 						</Tabs>
-						<TabPanel value={value} index={0} cardArray={filterAndSortCards()} screenChangeCardDesc={screenChangeCardDesc}/>
-						<TabPanel value={value} index={1} cardArray={filterAndSortCards(true)} screenChangeCardDesc={screenChangeCardDesc}/>
+						
 					</div>
 					<div id='search-filter-div'>
 						<TextField id="search" variant="outlined" placeholder="Search" onChange={(e) => (setSearchTerm(e.target.value.toLowerCase()))}/>
@@ -123,6 +122,8 @@ function HomePage(props) {
 						</Select>
 					</div>
 				</div>
+				<TabPanel value={value} index={0} cardArray={filterAndSortCards()} screenChangeCardDesc={screenChangeCardDesc}/>
+				<TabPanel value={value} index={1} cardArray={filterAndSortCards(true)} screenChangeCardDesc={screenChangeCardDesc}/>
 			</div>
 		</div>
 	)
