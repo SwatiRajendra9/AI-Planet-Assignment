@@ -71,7 +71,6 @@ function CardFullDescPage(props) {
 								<Modal 
 										id='model-del'
 										open={open}
-										onClose={handleClose}
 										aria-labelledby="modal-modal-title"
 										aria-describedby="modal-modal-description"
 									>
@@ -83,7 +82,7 @@ function CardFullDescPage(props) {
 												This action is irreversible. Are you sure you want to delete this model?
 											</Typography>
 											<div id='cancel-delete-button'>
-												<button id='cancel-del'>Cancel</button>
+												<button id='cancel-del' onClick={handleClose}>Cancel</button>
 												<button id='hard-del' onClick={deleteCard}>Delete</button>
 											</div>
 										</Box>
@@ -124,7 +123,7 @@ function CardFullDescPage(props) {
 					<h5 style={{color: "#333333", fontSize: "20px", margin: "0 0 15px"}}>{props.card.hackathonname}</h5>
 					<div id='date-range' style={{margin: "0 0 60px"}}>
 						<img id='date' src={dateimg} style={{height: "16.5px", width: "15px", marginRight: "5px"}}/>
-						<p style={{margin: "0", fontSize: "14px", color:"#858585"}}>{new Date(props.card.endDate).toLocaleDateString()} - {new Date(props.card.endDate).toLocaleDateString()}</p>
+						<p style={{margin: "0", fontSize: "14px", color:"#858585"}}>{new Date(props.card.startDate).toLocaleDateString()} - {new Date(props.card.endDate).toLocaleDateString()}</p>
 					</div>
 					<Button
 						variant="outlined" 

@@ -414,6 +414,15 @@ h1 {
 }
 
 #desc {
+  min-height: 24px;
+  
+  border-radius: 8px;
+  max-height: auto;
+  width: 706px;
+  font-size: 16px;
+  padding: 2%;
+  font-family: 'Poppins';
+  font-weight: 400;
   
   height: 153px;
 }
@@ -436,7 +445,7 @@ h1 {
   margin-bottom: 2%;
 }
 
-#title,#summary,#desc,#github-rep,#other-links,#hackathon-name {
+#title,#summary,#github-rep,#other-links,#hackathon-name {
   min-height: 24px;
   
   border-radius: 8px;

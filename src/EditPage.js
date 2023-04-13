@@ -10,13 +10,36 @@ import { useState, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 function EditPage(props) {
     const [imagePreview, setImagePreview] = useState('no_preview');
     const [image, setImage] = useState('');
+    const [alertMessage, setAlertMessage] = useState("")
+    const [showAlert, setShowAlert] = useState(false)
 
     return(
         <div id='UploadForm-main-div'>
+            <Modal 
+                id='model-del'
+                open={showAlert}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box id='model-box'>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Error!
+                    </Typography>
+                    <Typography id="modal-modal-description">
+                        {alertMessage}
+                    </Typography>
+                    <div id='cancel-delete-button'>
+                        <button id='cancel-del' onClick={()=>setShowAlert(false)}>Ok</button>
+                    </div>
+                </Box>
+            </Modal>
             <div id='logo-div'>
               <img id='logo' src={logo} alt='ai-planet-logo' onClick={screenChangeHomePage}></img>
               <div id='blank-div-1'></div>
@@ -45,31 +68,22 @@ function EditPage(props) {
                     <div id='item4'>
                         <h4 id='form-headings'>Cover Image</h4>
                         <h4 id='minimumres'>Minimum Resolution: 360px X 360px</h4>
-                        {imagePreview === 'preview' ?
-                            <label variant="contained" component="label">    
-                            <div id='cover-img-preview'>
-                                <div id='preview-img-div'>
-                                    <img id='card-img' src={props.card.img}/>
-                                    <p>{props.card.imgName}</p>
-                                </div>
-                                
-                                <label>
-                                <div id='reupload-div'>
-                                <input required hidden accept="image/*" multiple type="file" onChange={(e) => onImageUpload(e)}/>
-                                    <p id='reupload'>Reupload</p>
-                                    <img id='card-img-reupload' src={reuplod}/>
-                                </div>
-                                </label>
-                            </div> 
+                        <label variant="contained" component="label">    
+                        <div id='cover-img-preview'>
+                            <div id='preview-img-div'>
+                                <img id='card-img' src={props.card.img}/>
+                                <p>{props.card.imgName}</p>
+                            </div>
+                            
+                            <label>
+                            <div id='reupload-div'>
+                            <input required hidden accept="image/*" multiple type="file" onChange={(e) => onImageUpload(e)}/>
+                                <p id='reupload'>Reupload</p>
+                                <img id='card-img-reupload' src={reuplod}/>
+                            </div>
                             </label>
-                        :                
-                            <label variant="contained" component="label">
-                                <div id='coverimg'>
-                                    <input required hidden accept="image/*" multiple type="file" onChange={(e) => onImageUpload(e)}/>
-                                    <img id='add-image-icon' src={addphoto} ></img>
-                                </div>    
-                            </label>
-                        }
+                        </div> 
+                        </label>
                     </div>
 
                     <div id='item5'>
@@ -106,18 +120,67 @@ function EditPage(props) {
                     </div>
                     <button id='upload' 
                         onClick={() => {
-                            if (
-                                (props.card.githubrep.indexOf("http://") == 0 || props.card.githubrep.indexOf("https://") == 0)
-                                && (props.card.otherlink.indexOf("http://") == 0 || props.card.otherlink.indexOf("https://") == 0) 
-                                && props.card.title.length>0 && props.card.summary.length>0 && props.card.desc.length>0 && 
-                                props.card.hackathonname.length>0 && props.card.startDate.length>0 && props.card.endDate.length>0
-                                ) {
-                                    screenChangeAfterSubmit();
-                                }
-                            else {
-                                alert('Please enter a url starting with http:// or https://');
+                            var validated = true;
+                            console.log(dayjs().format())
+                            console.log(props.card.endDate)
+                            if (props.card.title == undefined || props.card.title.trim().length == 0) {
+                                validated = false;
+                                setAlertMessage("Please enter a title")
+                                setShowAlert(true)
                             }
-                            
+                            if ((props.card.summary == undefined || props.card.summary. trim().length == 0) && validated) {
+                                validated = false;
+                                setAlertMessage("Please enter a summary")
+                                setShowAlert(true)
+                            }
+                            if ((props.card.desc == undefined || props.card.desc. trim().length == 0) && validated) {
+                                validated = false;
+                                setAlertMessage("Please enter a description")
+                                setShowAlert(true)
+                            }
+                            if ((props.card.hackathonname == undefined || props.card.hackathonname. trim().length == 0) && validated) {
+                                validated = false
+                                setAlertMessage("Please enter a hackhathon name")
+                                setShowAlert(true)
+                            }
+                            if ((props.card.startDate == undefined || props.card.startDate. trim().length == 0) && validated) {
+                                validated = false;
+                                setAlertMessage("Please enter a startDate")
+                                setShowAlert(true)
+                            } 
+                            if ((props.card.endDate == undefined || props.card.endDate. trim().length == 0) && validated) {
+                                validated = false;
+                                setAlertMessage("Please enter a endDate")
+                                setShowAlert(true)
+                            } 
+                            if (props.card.startDate > props.card.endDate && validated) {
+                                validated = false
+                                setAlertMessage("Start date cant be later than end date")
+                                setShowAlert(true)
+                            }
+                            if (dayjs().format() < props.card.startDate && validated) {
+                                validated = false
+                                setAlertMessage("Submissions have not started yet")
+                                setShowAlert(true)
+                            }
+                            if (dayjs().add(-1, 'day').format() > props.card.endDate && validated) {
+                                validated = false
+                                setAlertMessage("Deadline for submission is over")
+                                setShowAlert(true)
+                            }
+                            if ((props.card.githubrep == undefined || props.card.githubrep.indexOf("http") != 0) && validated) {
+                                validated = false;
+                                setAlertMessage("Please enter a github link starting with http:// or https://'")
+                                setShowAlert(true)
+                            } 
+                            if ((props.card.otherlink == undefined || props.card.otherlink.indexOf("http") != 0 ) && validated) {
+                                validated = false;
+                                setAlertMessage("Please enter a other link starting with http:// or https://'")
+                                setShowAlert(true)
+                            } 
+                            if (validated) {
+                                    screenChangeAfterSubmit();
+                            }
                         }
                         }>Save Submission</button> 
 
